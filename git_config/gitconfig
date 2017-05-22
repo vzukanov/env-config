@@ -1,0 +1,30 @@
+
+[user]
+    name = Vasiliy Zukanov
+    email = vasiliy.zukanov@gmail.com
+
+[alias]
+    co = checkout
+    ci = commit
+    st = status
+    br = branch
+    dt = difftool
+
+[diff]
+    tool = p4merge
+[difftool "p4merge"]
+    cmd = "p4merge $HOMEPATH$LOCAL $REMOTE"
+
+
+[merge]
+    tool = p4merge
+[mergetool "p4merge"]
+    cmd = p4merge $BASE $LOCAL $REMOTE $MERGED
+    trustExitCode = true
+    keepBackup = false
+[core]
+	editor = emacs
+[push]
+	default = matching
+[color]
+	ui = auto

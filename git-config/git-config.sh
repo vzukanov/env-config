@@ -6,8 +6,10 @@ command -v git > /dev/null 2>&1 || { echo "Git not found. Aborting!"; return 1; 
 SYSTEM_GITCONFIG=~/.gitconfig
 MY_GITCONFIG=$GIT_CONFIG_DIR/gitconfig
 
+echo Checking existence of $SYSTEM_GITCONFIG
+
 # Backup exisitng gitconfig if exists
-if [ -f "${SYSTEM_GITCONFIG}" ] ; then
+if [[ -f "${SYSTEM_GITCONFIG}" || -L "${SYSTEM_GITCONFIG}" ]] ; then
     DATE=`date -Iseconds`
     GITCONFIG_BAK=~/gitconfig.bak.$DATE
     echo Moving existing $SYSTEM_GITCONFIG to $GITCONFIG_BAK

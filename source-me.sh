@@ -12,10 +12,10 @@ echo ----------------------------------------
 # Git configuration
 ########################################
 
-GIT_CONFIG_DIR=$ENV_CONFIG_DIR/git_config
-GIT_CONFIG_SCRIPT=$GIT_CONFIG_DIR/git_config.sh
+GIT_CONFIG_DIR=$ENV_CONFIG_DIR/git-config
+GIT_CONFIG_SCRIPT=$GIT_CONFIG_DIR/git-config.sh
 
-if [ -f "${GIT_CONFIG_SCRIPT}" ] ; then
+if [[ -e "${GIT_CONFIG_SCRIPT}" ]] ; then
     echo Git configuration script: $GIT_CONFIG_SCRIPT
     source "${GIT_CONFIG_SCRIPT}" || return 1;
 else

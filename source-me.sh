@@ -6,7 +6,6 @@ export ENV_CONFIG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo Root directory of configuration files: $ENV_CONFIG_DIR
 
-
 ########################################
 # Environmental variables
 ########################################

@@ -18,8 +18,7 @@ fi
 
 # Backup exisitng gitconfig if exists 
 if [[ -f "$SYSTEM_GITCONFIG" || -L "$SYSTEM_GITCONFIG" ]] ; then
-    DATE=`date -Iseconds`
-    GITCONFIG_BAK=~/gitconfig.bak.$DATE
+    GITCONFIG_BAK=~/gitconfig.bak
     echo Moving existing $SYSTEM_GITCONFIG to $GITCONFIG_BAK
     mv $SYSTEM_GITCONFIG $GITCONFIG_BAK
 fi

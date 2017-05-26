@@ -36,8 +36,7 @@ source $ENV_CONFIG_DIR/bash_aliases
 echo ----------------------------------------
 echo Configuring Git
 
-GIT_CONFIG_DIR=$ENV_CONFIG_DIR/git-config
-GIT_CONFIG_SCRIPT=$GIT_CONFIG_DIR/git-config.sh
+GIT_CONFIG_SCRIPT=$ENV_CONFIG_DIR/git-config/git-config.sh
 
 if [[ -e "$GIT_CONFIG_SCRIPT" ]] ; then
     echo Git configuration script: $GIT_CONFIG_SCRIPT
@@ -56,22 +55,13 @@ echo ----------------------------------------
 echo ----------------------------------------
 echo Configuring Emacs
 
-EMACS_CONFIG_DIR=~/.emacs.d
-MY_EMACS_CONFIG_REPO=https://github.com/vzukanov/.emacs.d.git
+EMACS_CONFIG_SCRIPT=$ENV_CONFIG_DIR/emacs-config/emacs-config.sh
 
-if [[ -e "$EMACS_CONFIG_DIR" ]] ; then
-    cd $EMACS_CONFIG_DIR
-    TRACKED_REPO=`git config --get remote.origin.url`
-    cd - > /dev/null
-    if [[ $TRACKED_REPO == $MY_EMACS_CONFIG_REPO ]] ; then
-	echo $EMACS_CONFIG_DIR already exists and tracks correct origin
-    else
-	echo Moving $EMACS_CONFIG_DIR to $EMACS_CONFIG_DIR.bak
-	mv $EMACS_CONFIG_DIR $EMACS_CONFIG_DIR.bak
-	echo Clonning $MY_EMACS_CONFIG_REPO into $EMACS_CONFIG_DIR
-	git clone $MY_EMACS_CONFIG_REPO $EMACS_CONFIG_DIR	
-    fi
+if [[ -e "$EMACS_CONFIG_SCRIPT" ]] ; then
+    echo Emacs configuration script: $EMACS_CONFIG_SCRIPT
+    source "$EMACS_CONFIG_SCRIPT" || return 1;
 else
-    echo Clonning $MY_EMACS_CONFIG_REPO into $EMACS_CONFIG_DIR
-    git clone $MY_EMACS_CONFIG_REPO $EMACS_CONFIG_DIR
+    echo Emacs configuration script wasn´t found: $EMACS_CONFIG_SCRIPT
+    return 1
 fi
+

@@ -67,3 +67,19 @@ else
     return 1
 fi
 
+########################################
+# Xterm configuration
+########################################
+
+echo ----------------------------------------
+echo Configuring Xterm
+
+XTERM_CONFIG_SCRIPT=$ENV_CONFIG_DIR/xterm-config/xterm-config.sh
+
+if [[ -e "$XTERM_CONFIG_SCRIPT" ]] ; then
+    echo Xterm configuration script: $XTERM_CONFIG_SCRIPT
+    source "$XTERM_CONFIG_SCRIPT" || return 1;
+else
+    echo Xterm configuration script wasn´t found: $XTERM_CONFIG_SCRIPT
+    return 1
+fi

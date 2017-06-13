@@ -23,6 +23,14 @@ export PS1="\[\e[32m\]\A \W \[\e[1;32m\] \$ \[\e[0m\]"
 # export TERM=xterm-256color
 
 ########################################
+# Bash config
+########################################
+
+# Up Arrow / Down Arrow buttons autocomplete from history
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+
+########################################
 # Aliases
 ########################################
 

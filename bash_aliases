@@ -1,7 +1,15 @@
 #!/bin/bash
 
-# This function causes 'e' to start emacs in background
-e() { emacs "$@" & }
+# This function causes 'e' to start emacs 
+e() {
+    if [ "$SSH_SESSION" = true ] ; then
+	# Foreground for ssh shells
+	emacs "$@" 
+    else
+	# Background for non-ssh shells
+	emacs "$@" &
+    fi
+}
 
 alias c='clear'
 

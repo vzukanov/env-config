@@ -1,10 +1,21 @@
 #!/bin/bash
 
+echo
+echo ----------------------------------------
 echo Starting environment configuration
 
 export ENV_CONFIG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo Root directory of configuration files: $ENV_CONFIG_DIR
+
+
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ] || [ -n "$SSH_CONNECTION" ] ; then
+    SSH_SESSION=true
+fi
+
+if [ "$SSH_SESSION" = true ] ; then
+    echo The shell corresponds to ssh session
+fi
 
 ########################################
 # Environmental variables
@@ -13,8 +24,13 @@ echo Root directory of configuration files: $ENV_CONFIG_DIR
 echo ----------------------------------------
 echo Configuring environmental variables
 
-# Customize the prompt
-export PS1="\[\e[32m\]\A \W \[\e[1;32m\] \$ \[\e[0m\]"
+if [  "$SSH_SESSION" = true ] ; then
+    # Do nothing
+    :
+else
+    # Customize the prompt for non-ssh sessions
+    export PS1="\[\e[32m\]\A \W \[\e[1;32m\] \$ \[\e[0m\]"
+fi
 
 # Make default term with 256 colors - allows for good looking
 # terminal based Emacs
@@ -79,15 +95,20 @@ fi
 # Xterm configuration
 ########################################
 
-echo ----------------------------------------
-echo Configuring Xterm
-
-XTERM_CONFIG_SCRIPT=$ENV_CONFIG_DIR/xterm-config/xterm-config.sh
-
-if [[ -e "$XTERM_CONFIG_SCRIPT" ]] ; then
-    echo Xterm configuration script: $XTERM_CONFIG_SCRIPT
-    source "$XTERM_CONFIG_SCRIPT" || return 1;
+if [ "$SSH_SESSION" = true ] ; then
+    # Don't configure Xterm if ssh session
+    :
 else
-    echo Xterm configuration script wasn´t found: $XTERM_CONFIG_SCRIPT
-    return 1
+    echo ----------------------------------------
+    echo Configuring Xterm
+
+    XTERM_CONFIG_SCRIPT=$ENV_CONFIG_DIR/xterm-config/xterm-config.sh
+
+    if [[ -e "$XTERM_CONFIG_SCRIPT" ]] ; then
+	echo Xterm configuration script: $XTERM_CONFIG_SCRIPT
+	source "$XTERM_CONFIG_SCRIPT" || return 1;
+    else
+	echo Xterm configuration script wasn´t found: $XTERM_CONFIG_SCRIPT
+	return 1
+    fi
 fi

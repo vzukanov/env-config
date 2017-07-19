@@ -34,9 +34,7 @@ fi
 
 # Make default term with 256 colors - allows for good looking
 # terminal based Emacs
-# I commented this out because https://wiki.archlinux.org/index.php/Xterm advice
-# against setting this variable from shell config scripts...
-# export TERM=xterm-256color
+export TERM=xterm-256color
 
 ########################################
 # Bash config

@@ -32,10 +32,6 @@ else
     export PS1="\[\e[32m\]\A \W \[\e[1;32m\] \$ \[\e[0m\]"
 fi
 
-# Make default term with 256 colors - allows for good looking
-# terminal based Emacs
-export TERM=xterm-256color
-
 ########################################
 # Bash config
 ########################################

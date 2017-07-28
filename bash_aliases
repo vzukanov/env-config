@@ -3,11 +3,11 @@
 # This function causes 'e' to start emacs 
 e() {
     if [ "$SSH_SESSION" = true ] ; then
-	# Foreground for ssh shells
-	emacs "$@" 
+	# Foreground no-window mode for ssh shells
+	TERM=xterm-256color emacs -nw "$@" 
     else
 	# Background for non-ssh shells
-	emacs "$@" &
+	TERM=xterm-256color emacs "$@" &
     fi
 }
 

@@ -19,4 +19,4 @@ library=githelperfunctions.sh
 set_path_vars "$1" "$2" "$3" "$4"
 
 # -- use p4mergeU conflictFile
-"$p4mergewinpath"  "$localwinpath" "$basewinpath" "$remotewinpath" "$mergedwinpath"
+"$p4mergewinpath"  "$basewinpath" "$localwinpath" "$remotewinpath" "$mergedwinpath"

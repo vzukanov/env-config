@@ -14,15 +14,15 @@ convert_path () {
 
 
 set_path_vars () {
-	local=$1
-	remote=$2
-	base=$3
+	base=$1
+	local=$2
+	remote=$3
 	merged=$4
 
 	# echo ========= Cygwin paths =======
+	# echo "BASE    :  $base"
 	# echo "LOCAL   :  $local"
 	# echo "REMOTE  :  $remote"
-	# echo "BASE    :  $base"
 	# echo "MERGED  :  $merged"
 
 	localwinpath=$(convert_path "$local")
@@ -31,9 +31,9 @@ set_path_vars () {
 	mergedwinpath=$(convert_path "$merged")
 
 	# echo ========= Win paths =======
+	# echo "BASE    :  $basewinpath"
 	# echo "LOCAL   :  $localwinpath"
 	# echo "REMOTE  :  $remotewinpath"
-	# echo "BASE    :  $basewinpath"
 	# echo "MERGED  :  $mergedwinpath"
 
 	caption=`basename "$merged"`

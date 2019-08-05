@@ -104,6 +104,21 @@ else
 fi
 
 ########################################
+# Display configuration for X apps
+########################################
+
+echo ----------------------------------------
+echo Configuring DISPLAY env variable
+
+if grep -qEi "(microsoft|wsl)" /proc/version &> /dev/null ; then
+    echo "WSL Bash detected; DISPLAY=localhost:0; LIBGL_ALWAYS_INDIRECT=1"
+    export DISPLAY=localhost:0
+    export LIBGL_ALWAYS_INDIRECT=1
+else
+    echo "Non-WSL Bash; no need to configure DISPLAY"
+fi
+
+########################################
 # Xterm configuration
 ########################################
 

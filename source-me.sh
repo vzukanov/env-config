@@ -22,6 +22,17 @@ fi
 ########################################
 
 echo ----------------------------------------
+echo Overwriting ~/.bashrc
+
+echo source ~/env-config/source-me.sh > ~/.bashrc
+
+
+
+########################################
+# Environmental variables
+########################################
+
+echo ----------------------------------------
 echo Configuring environmental variables
 
 if [  "$SSH_SESSION" = true ] ; then

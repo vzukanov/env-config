@@ -13,8 +13,17 @@ if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ] || [ -n "$SSH_CONNECTION" ] ; then
     SSH_SESSION=true
 fi
 
-if [ "$SSH_SESSION" = true ] ; then
+if [ "$SSH_SESSION" = "true" ] ; then
     echo The shell corresponds to ssh session
+fi
+
+
+if grep -qEi "(microsoft|wsl)" /proc/version &> /dev/null ; then
+    export ENV_CONFIG_WSL="true"
+fi
+
+if [[ `uname -o` == "Cygwin" ]] ; then
+    export ENV_CONFIG_CYGWIN="true"
 fi
 
 ########################################
@@ -121,7 +130,7 @@ fi
 echo ----------------------------------------
 echo Configuring DISPLAY env variable
 
-if grep -qEi "(microsoft|wsl)" /proc/version &> /dev/null ; then
+if [ "$ENV_CONFIG_WSL" = "true" ] ; then
     echo "WSL Bash detected; DISPLAY=localhost:0; LIBGL_ALWAYS_INDIRECT=1"
     export DISPLAY=localhost:0
     export LIBGL_ALWAYS_INDIRECT=1

@@ -26,16 +26,6 @@ if [[ `uname -o` == "Cygwin" ]] ; then
     export ENV_CONFIG_CYGWIN="true"
 fi
 
-########################################
-# Environmental variables
-########################################
-
-echo ----------------------------------------
-echo Overwriting ~/.bashrc
-
-echo source ~/env-config/source-me.sh > ~/.bashrc
-
-
 
 ########################################
 # Environmental variables

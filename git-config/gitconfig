@@ -28,6 +28,7 @@
     trustExitCode = true
 [core]
 	editor = emacs
+	autocrlf = true
 [push]
 	default = current
 [color]

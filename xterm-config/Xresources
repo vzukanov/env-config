@@ -8,6 +8,7 @@ xterm*termName: xterm-color
 xterm*eightBitInput: false
 xterm*vt100*cursorBlink: false
 XTerm*toolBar: false
+XTerm*visualBell:  false
 
 !BLK Cursor
 #define _color0        #000d18

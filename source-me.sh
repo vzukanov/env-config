@@ -3,7 +3,6 @@
 # if not interactive shell - don't do anything
 [[ $- != *i* ]] && return
 
-
 echo
 echo ----------------------------------------
 echo Starting environment configuration

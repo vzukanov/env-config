@@ -1,7 +1,5 @@
 
 [user]
-    name = Vasiliy Zukanov
-    email = vasiliy.zukanov@gmail.com
 
 [alias]
     co = checkout
@@ -27,8 +25,8 @@
     cmd = "p4merge-merge.sh $BASE $LOCAL $REMOTE $MERGED"
     trustExitCode = true
 [core]
-	editor = emacs
 	autocrlf = true
+        editor = emacs
 [push]
 	default = current
 [color]

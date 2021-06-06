@@ -1,5 +1,5 @@
-XTerm*faceName: Bitstream Vera Serif Mono
-xterm*faceSize: 11
+XTerm*faceName: DejaVu Sans Mono
+xterm*faceSize: 13
 xterm*vt100*geometry: 120x40
 xterm*saveLines: 16384
 xterm*loginShell: true

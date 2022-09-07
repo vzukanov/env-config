@@ -7,18 +7,30 @@ echo
 echo ----------------------------------------
 echo Starting environment configuration
 
-export ENV_CONFIG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-echo Root directory of configuration files: $ENV_CONFIG_DIR
-
 
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ] || [ -n "$SSH_CONNECTION" ] ; then
     SSH_SESSION=true
-fi
-
-if [ "$SSH_SESSION" = "true" ] ; then
     echo The shell corresponds to ssh session
 fi
+
+if [ ! -z ${ZSH_VERSION+x} ]; then
+    ZSH=true
+elif [ ! -z ${BASH_VERSION+x} ]; then
+    BASH=true
+else
+    echo "unsupported shell type"
+fi
+
+# Find out where this script is located
+if [ "$BASH" = true ] ; then
+    export ENV_CONFIG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+elif [ "$ZSH" = true ] ; then
+    export ENV_CONFIG_DIR="${0:A:h}"
+else
+    echo "unsupported shell type"
+fi
+
+echo Root directory of configuration files: $ENV_CONFIG_DIR
 
 
 if grep -qEi "(microsoft|wsl)" /proc/version &> /dev/null ; then
@@ -42,7 +54,14 @@ if [  "$SSH_SESSION" = true ] ; then
     :
 else
     # Customize the prompt for non-ssh sessions
-    export PS1="\[\e[32m\]\A \W \[\e[1;32m\] \$ \[\e[0m\]"
+    if [ "$BASH" = true ] ; then
+        export PS1="\[\e[32m\]\A \W \[\e[1;32m\] \$ \[\e[0m\]"
+    elif [ "$ZSH" = true ] ; then
+        autoload -U colors && colors
+        export PS1=$'%{\e[32m%}%D{%H:%M} %{\e[1;32m%} \$ %{\e[0m%}'
+    else
+        echo "unsupported shell type"
+    fi
 fi
 
 ########################################

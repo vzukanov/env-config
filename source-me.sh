@@ -55,40 +55,44 @@ if [  "$SSH_SESSION" = true ] ; then
 else
     # Customize the prompt for non-ssh sessions
     if [ "$BASH" = true ] ; then
-        export PS1="\[\e[32m\]\A \W \[\e[1;32m\] \$ \[\e[0m\]"
+        export PS1="\[\e[32m\]\A \W \[\e[1;32m\]\$ \[\e[0m\]"
     elif [ "$ZSH" = true ] ; then
         autoload -U colors && colors
-        export PS1=$'%{\e[32m%}%D{%H:%M} %{\e[1;32m%} \$ %{\e[0m%}'
+        export PS1=$'%{\e[32m%}%D{%H:%M} %1d %{\e[1;32m%}\$ %{\e[0m%}'
     else
         echo "unsupported shell type"
     fi
 fi
 
 ########################################
-# Bash config
+# History
 ########################################
 
-# Up Arrow / Down Arrow buttons autocomplete from history
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
+export HISTSIZE=10000
+export SAVEHIST=10000
 
+export HISTFILE=~/.eternal_history
 
-########################################
-# Eternal bash history
-########################################
-
-# Undocumented feature which sets the size to "unlimited".
-# http://stackoverflow.com/questions/9457233/unlimited-bash-history
-export HISTFILESIZE=
-export HISTSIZE=
-export HISTTIMEFORMAT="[%F %T] "
-
-# Change the file location because certain bash sessions truncate .bash_history file upon close.
-# http://superuser.com/questions/575479/bash-history-truncated-to-500-lines-on-each-login
-export HISTFILE=~/.bash_eternal_history
-# Force prompt to write history after every command.
-# http://superuser.com/questions/20900/bash-history-loss
-PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+if [ "$BASH" = true ] ; then
+    # Force prompt to write history after every command.
+    # http://superuser.com/questions/20900/bash-history-loss
+    export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+    export HISTTIMEFORMAT="[%F %T] "
+    bind '"\e[A": history-search-backward'
+    bind '"\e[B": history-search-forward'
+elif [ "$ZSH" = true ] ; then
+    setopt BANG_HIST                 # Treat the '!' character specially during expansion.
+    setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
+    setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+    setopt SHARE_HISTORY             # Share history between all sessions.
+    setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
+    setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
+    setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
+    bindkey "^[[A" history-beginning-search-backward
+    bindkey "^[[B" history-beginning-search-forward
+else
+    echo "unsupported shell type"
+fi
 
 ########################################
 # Aliases

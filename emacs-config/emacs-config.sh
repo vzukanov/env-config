@@ -1,6 +1,7 @@
 #!/bin/bash
 
 SYSTEM_EMACS_CONFIG_DIR=~/.emacs.d
+MY_EMACS_CONFIG_REPO=https://github.com/vzukanov/.emacs.d.git
 MY_EMACS_CONFIG_REPO_REGEXP=".*vzukanov/.emacs.d.git$"
 
 if [[ -e "$SYSTEM_EMACS_CONFIG_DIR" ]] ; then
@@ -11,7 +12,8 @@ if [[ -e "$SYSTEM_EMACS_CONFIG_DIR" ]] ; then
     cd - > /dev/null
     
     if [[ $TRACKED_REPO =~ $MY_EMACS_CONFIG_REPO_REGEXP ]] ; then
-	echo $SYSTEM_EMACS_CONFIG_DIR already exists and tracks correct origin
+	echo $SYSTEM_EMACS_CONFIG_DIR already exists and tracks correct origin - just pulling
+	cd $SYSTEM_EMACS_CONFIG_DIR > /dev/null && git pull && cd - > /dev/null
     else
 	echo Moving $SYSTEM_EMACS_CONFIG_DIR to $SYSTEM_EMACS_CONFIG_DIR.bak
 	mv $SYSTEM_EMACS_CONFIG_DIR $SYSTEM_EMACS_CONFIG_DIR.bak

@@ -35,6 +35,8 @@ echo Root directory of configuration files: $ENV_CONFIG_DIR
 
 if grep -qEi "(microsoft|wsl)" /proc/version &> /dev/null ; then
     export ENV_CONFIG_WSL="true"
+else
+    export ENV_CONFIG_WSL="false"
 fi
 
 if [[ `uname -o` == "Cygwin" ]] ; then

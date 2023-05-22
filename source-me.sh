@@ -68,19 +68,19 @@ fi
 # History
 ########################################
 
+unset HISTFILESIZE
 export HISTSIZE=10000
 export SAVEHIST=10000
 
-export HISTFILE=~/.eternal_history
-
 if [ "$BASH" = true ] ; then
-    # Force prompt to write history after every command.
-    # http://superuser.com/questions/20900/bash-history-loss
-    export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+    echo "Configuring history for Bash"
+    shopt -s histappend
+    export PROMPT_COMMAND="history -a; history -n"
     export HISTTIMEFORMAT="[%F %T] "
     bind '"\e[A": history-search-backward'
     bind '"\e[B": history-search-forward'
 elif [ "$ZSH" = true ] ; then
+    echo "Configuring history for Zsh"
     setopt BANG_HIST                 # Treat the '!' character specially during expansion.
     setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
     setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.

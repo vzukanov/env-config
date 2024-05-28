@@ -70,6 +70,9 @@ fi
 ########################################
 # Shell configurations
 ########################################
+
+export LSCOLORS="Exfxcxdxcxegecabagacad" 
+
 if [ "$ZSH" = true ] ; then
     setopt noautomenu # disable zsh's default circling through auto-complete options
 fi

@@ -3,11 +3,15 @@
 # This function causes 'e' to start emacs 
 e() {
     if [ "$SSH_SESSION" = true ] ; then
-	# Foreground no-window mode for ssh shells
+	# Foreground process no-window mode for ssh shells
 	TERM=xterm-256color emacs -nw "$@" 
     else
-	# Background for non-ssh shells
-	TERM=xterm-256color emacs "$@" &
+	# Background process windowed for non-ssh shells
+        TERM=xterm-256color emacs "$@" &
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            sleep 1 # give emacs time to start
+            osascript -e 'tell application "Emacs" to activate' # bring to foreground after startup in macOS
+        fi	
     fi
 }
 

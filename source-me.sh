@@ -32,13 +32,14 @@ fi
 
 echo Root directory of configuration files: $ENV_CONFIG_DIR
 
-
+# Detect WSL env on Windows
 if grep -qEi "(microsoft|wsl)" /proc/version &> /dev/null ; then
     export ENV_CONFIG_WSL="true"
 else
     export ENV_CONFIG_WSL="false"
 fi
 
+# Detect Cygwin env on Windows
 if [[ `uname -o` == "Cygwin" ]] ; then
     export ENV_CONFIG_CYGWIN="true"
 fi
@@ -53,7 +54,6 @@ echo Configuring environmental variables
 
 if [  "$SSH_SESSION" = true ] ; then
     # Do nothing
-    :
 else
     # Customize the prompt for non-ssh sessions
     if [ "$BASH" = true ] ; then
@@ -65,6 +65,15 @@ else
         echo "unsupported shell type"
     fi
 fi
+
+
+########################################
+# Shell configurations
+########################################
+if [ "$ZSH" = true ] ; then
+    setopt noautomenu # disable zsh's default circling through auto-complete options
+fi
+
 
 ########################################
 # History

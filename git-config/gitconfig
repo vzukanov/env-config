@@ -28,6 +28,6 @@
 	eol = lf
         editor = emacs
 [push]
-	default = current
+	default = upstream
 [color]
 	ui = auto

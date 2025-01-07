@@ -66,6 +66,9 @@ else
     fi
 fi
 
+# Make less search case insensitive, while preserving the colors
+# and keeping the output in the terminal
+export LESS='-iRX'
 
 ########################################
 # Shell configurations

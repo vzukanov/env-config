@@ -53,7 +53,7 @@ echo ----------------------------------------
 echo Configuring environmental variables
 
 if [  "$SSH_SESSION" = true ] ; then
-    # Do nothing
+    : # no-op
 else
     # Customize the prompt for non-ssh sessions
     if [ "$BASH" = true ] ; then

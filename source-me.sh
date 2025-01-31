@@ -13,12 +13,24 @@ if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ] || [ -n "$SSH_CONNECTION" ] ; then
     echo The shell corresponds to ssh session
 fi
 
-if [ ! -z ${ZSH_VERSION+x} ]; then
+if [[ -n ${ZSH_VERSION+x} ]]; then
     ZSH=true
-elif [ ! -z ${BASH_VERSION+x} ]; then
+elif [[ -n ${BASH_VERSION+x} ]]; then
     BASH=true
 else
-    echo "unsupported shell type"
+    echo "Error: unsupported shell type"
+    exit 1
+fi
+
+if grep -q "WSL2" /proc/version 2>/dev/null; then
+    export ENV_WSL2="true"
+elif grep -q "Microsoft" /proc/version 2>/dev/null; then
+    export ENV_WSL1="true"
+elif [[ "$(uname -o 2>/dev/null)" == "Cygwin" ]]; then
+    export ENV_CYGWIN="true"
+else
+    echo "Error: unsupported environment"
+    exit 1    
 fi
 
 # Find out where this script is located
@@ -31,18 +43,6 @@ else
 fi
 
 echo Root directory of configuration files: $ENV_CONFIG_DIR
-
-# Detect WSL env on Windows
-if grep -qEi "(microsoft|wsl)" /proc/version &> /dev/null ; then
-    export ENV_CONFIG_WSL="true"
-else
-    export ENV_CONFIG_WSL="false"
-fi
-
-# Detect Cygwin env on Windows
-if [[ `uname -o` == "Cygwin" ]] ; then
-    export ENV_CONFIG_CYGWIN="true"
-fi
 
 
 ########################################
@@ -163,12 +163,18 @@ fi
 echo ----------------------------------------
 echo Configuring DISPLAY env variable
 
-if [ "$ENV_CONFIG_WSL" = "true" ] ; then
-    echo "WSL Bash detected; DISPLAY=localhost:0; LIBGL_ALWAYS_INDIRECT=1"
+if [[ "$ENV_WSL1" == "true" ]]; then
+    echo "WSL1 detected; DISPLAY=localhost:0; LIBGL_ALWAYS_INDIRECT=1"
     export DISPLAY=localhost:0
     export LIBGL_ALWAYS_INDIRECT=1
+
+elif [[ "$ENV_WSL2" == "true" ]]; then
+    echo "WSL2 detected; setting DISPLAY via /etc/resolv.conf"
+    export DISPLAY="$(grep nameserver /etc/resolv.conf | awk '{print $2}'):0"
+    export LIBGL_ALWAYS_INDIRECT=1
+
 else
-    echo "Non-WSL Bash; no need to configure DISPLAY"
+    echo "Non-WSL shell; no need to configure DISPLAY"
 fi
 
 ########################################

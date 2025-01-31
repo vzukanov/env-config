@@ -1,23 +1,24 @@
 # Helper functions
-
-
 convert_path () {
-    file=$1
+    local file="$1"
 
-    if [ "$ENV_CONFIG_CYGWIN" = "true" ] ; then
-	if [ "$file" == '/dev/null' ] || [ ! -e "$file" ] ; then 
+    if [[ "$ENV_CYGWIN" == "true" ]]; then
+        if [[ "$file" == "/dev/null" || ! -e "$file" ]]; then 
             file="/tmp/nulla"
-            `echo "">$file`
-	fi
-	echo `cygpath -aw "$file"`
+            echo "" > "$file"
+        fi
+        cygpath -aw "$file"
+        return
     fi
 
-    
-    if [ "$ENV_CONFIG_WSL" = "true" ] ; then
-	echo `wslpath -am "$file"`
+    if [[ "$ENV_WSL1" == "true" || "$ENV_WSL2" == "true" ]]; then
+        wslpath -am "$file"
+        return
     fi
+
+    # If not in WSL or Cygwin, return original path
+    echo "$file"
 }
-
 
 set_path_vars () {
     base=$1
@@ -41,12 +42,10 @@ set_path_vars () {
     # echo "LOCAL   :  $localwinpath"
     # echo "REMOTE  :  $remotewinpath"
     # echo "MERGED  :  $mergedwinpath"
-
-    if [ "$ENV_CONFIG_CYGWIN" = "true" ] ; then
-	p4mergewinpath="C:/Program Files/Perforce/p4merge.exe"
-    fi
     
-    if [ "$ENV_CONFIG_WSL" = "true" ] ; then
-	p4mergewinpath="/mnt/c/Program Files/Perforce/p4merge.exe"
+    if [[ "$ENV_CYGWIN" == "true" ]]; then
+        p4mergewinpath="C:/Program Files/Perforce/p4merge.exe"
+    elif [[ "$ENV_WSL1" == "true" || "$ENV_WSL2" == "true" ]];  then
+        p4mergewinpath="/mnt/c/Program Files/Perforce/p4merge.exe"
     fi
 }

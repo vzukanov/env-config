@@ -28,9 +28,6 @@ elif grep -q "Microsoft" /proc/version 2>/dev/null; then
     export ENV_WSL1="true"
 elif [[ "$(uname -o 2>/dev/null)" == "Cygwin" ]]; then
     export ENV_CYGWIN="true"
-else
-    echo "Error: unsupported environment"
-    exit 1    
 fi
 
 # Find out where this script is located

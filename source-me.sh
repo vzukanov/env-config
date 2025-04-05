@@ -8,7 +8,7 @@ echo ----------------------------------------
 echo Starting environment configuration
 
 
-if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ] || [ -n "$SSH_CONNECTION" ] ; then
+if [ -n "${SSH_CLIENT:-}" ] || [ -n "${SSH_TTY:-}" ] || [ -n "${SSH_CONNECTION:-}" ] ; then
     SSH_SESSION=true
     echo The shell corresponds to ssh session
 fi
@@ -33,7 +33,7 @@ fi
 # Find out where this script is located
 if [ "$BASH" = true ] ; then
     export ENV_CONFIG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-elif [ "$ZSH" = true ] ; then
+elif [ "${ZSH:-false}" = true ] ; then
     export ENV_CONFIG_DIR="${0:A:h}"
 else
     echo "unsupported shell type"
@@ -49,13 +49,13 @@ echo Root directory of configuration files: $ENV_CONFIG_DIR
 echo ----------------------------------------
 echo Configuring environmental variables
 
-if [  "$SSH_SESSION" = true ] ; then
+if [ "${SSH_SESSION:-}" = true ] ; then
     : # no-op
 else
     # Customize the prompt for non-ssh sessions
     if [ "$BASH" = true ] ; then
         export PS1="\[\e[32m\]\A \W \[\e[1;32m\]\$ \[\e[0m\]"
-    elif [ "$ZSH" = true ] ; then
+    elif [ "${ZSH:-false}" = true ] ; then
         autoload -U colors && colors
         export PS1=$'%{\e[32m%}%D{%H:%M} %1d %{\e[1;32m%}\$ %{\e[0m%}'
     else
@@ -73,7 +73,7 @@ export LESS='-iRX'
 
 export LSCOLORS="Exfxcxdxcxegecabagacad" 
 
-if [ "$ZSH" = true ] ; then
+if [ "${ZSH:-false}" = true ] ; then
     setopt noautomenu # disable zsh's default circling through auto-complete options
 fi
 
@@ -93,7 +93,7 @@ if [ "$BASH" = true ] ; then
     export HISTTIMEFORMAT="[%F %T] "
     bind '"\e[A": history-search-backward'
     bind '"\e[B": history-search-forward'
-elif [ "$ZSH" = true ] ; then
+elif [ "${ZSH:-false}" = true ] ; then
     echo "Configuring history for Zsh"
     setopt BANG_HIST                 # Treat the '!' character specially during expansion.
     setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
@@ -160,12 +160,12 @@ fi
 echo ----------------------------------------
 echo Configuring DISPLAY env variable
 
-if [[ "$ENV_WSL1" == "true" ]]; then
+if [[ "${ENV_WSL1:-}" == "true" ]]; then
     echo "WSL1 detected; DISPLAY=localhost:0; LIBGL_ALWAYS_INDIRECT=1"
     export DISPLAY=localhost:0
     export LIBGL_ALWAYS_INDIRECT=1
 
-elif [[ "$ENV_WSL2" == "true" ]]; then
+elif [[ "${ENV_WSL2:-}" == "true" ]]; then
     echo "WSL2 detected; setting DISPLAY via /etc/resolv.conf"
     export DISPLAY="$(grep nameserver /etc/resolv.conf | awk '{print $2}'):0"
     export LIBGL_ALWAYS_INDIRECT=1
@@ -178,7 +178,7 @@ fi
 # Xterm configuration
 ########################################
 
-if [ "$SSH_SESSION" = true ] ; then
+if [ "${SSH_SESSION:-}" = true ] ; then
     # Don't configure Xterm if ssh session
     :
 else
@@ -188,10 +188,10 @@ else
     XTERM_CONFIG_SCRIPT=$ENV_CONFIG_DIR/xterm-config/xterm-config.sh
 
     if [[ -e "$XTERM_CONFIG_SCRIPT" ]] ; then
-	echo Xterm configuration script: $XTERM_CONFIG_SCRIPT
-	source "$XTERM_CONFIG_SCRIPT" || return 1;
+        echo Xterm configuration script: $XTERM_CONFIG_SCRIPT
+        source "$XTERM_CONFIG_SCRIPT" || return 1;
     else
-	echo Xterm configuration script wasn´t found: $XTERM_CONFIG_SCRIPT
-	return 1
+        echo Xterm configuration script wasn´t found: $XTERM_CONFIG_SCRIPT
+        return 1
     fi
 fi
